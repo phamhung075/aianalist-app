@@ -7,7 +7,7 @@ export class FirebaseRepositoryService {
   constructor(private readonly firebaseService: FirebaseService) {}
 
   async getDocument(collection: string, documentId: string) {
-    const firestore = this.firebaseService.getFirestore();
+    const firestore = await this.firebaseService.getFirestore();
     const docRef = firestore.collection(collection).doc(documentId);
     const doc = await docRef.get();
 

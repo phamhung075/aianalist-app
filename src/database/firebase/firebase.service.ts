@@ -25,4 +25,22 @@ export class FirebaseService implements OnModuleInit {
       this.logger.log('Firebase Initialized Successfully');
     }
   }
+
+  getFirestore(): admin.firestore.Firestore {
+    return admin.firestore();
+  }
+
+  /**
+   * Get Firebase Auth instance
+   */
+  getAuth(): admin.auth.Auth {
+    return admin.auth();
+  }
+
+  /**
+   * Get Firebase Realtime Database instance
+   */
+  getDatabase(): admin.database.Database {
+    return admin.database();
+  }
 }
