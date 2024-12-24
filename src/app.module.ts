@@ -6,6 +6,7 @@ import { PythonModule } from './lib/python/python.module';
 import { FirebaseModule } from './database/firebase/firebase.module';
 import { FirebaseTestController } from './database/firebase/firebase-test/firebase-test.controller';
 import { ConfigModule } from '@nestjs/config';
+import { AuthController } from './auth/auth.controller';
 
 @Module({
     imports: [
@@ -16,7 +17,7 @@ import { ConfigModule } from '@nestjs/config';
         PythonModule,
         FirebaseModule,
     ],
-    controllers: [AppController, FirebaseTestController],
+    controllers: [AppController, FirebaseTestController, AuthController],
     providers: [AppService],
 })
 export class AppModule {}
