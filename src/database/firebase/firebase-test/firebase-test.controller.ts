@@ -4,30 +4,30 @@ import { FirebaseRepositoryService } from '../firebase-repository/firebase-repos
 
 @Controller('firebase')
 export class FirebaseTestController {
-  constructor(private readonly firebaseRepo: FirebaseRepositoryService) {}
+    constructor(private readonly firebaseRepo: FirebaseRepositoryService) {}
 
-  @Get(':collection/:id')
-  async getDocument(
-    @Param('collection') collection: string,
-    @Param('id') id: string,
-  ) {
-    return await this.firebaseRepo.getDocument(collection, id);
-  }
+    @Get(':collection/:id')
+    async getDocument(
+        @Param('collection') collection: string,
+        @Param('id') id: string
+    ) {
+        return await this.firebaseRepo.getDocument(collection, id);
+    }
 
-  @Post(':collection/:id')
-  async setDocument(
-    @Param('collection') collection: string,
-    @Param('id') id: string,
-    @Body() data: any,
-  ) {
-    return await this.firebaseRepo.setDocument(collection, id, data);
-  }
+    @Post(':collection/:id')
+    async setDocument(
+        @Param('collection') collection: string,
+        @Param('id') id: string,
+        @Body() data: any
+    ) {
+        return await this.firebaseRepo.setDocument(collection, id, data);
+    }
 
-  @Delete(':collection/:id')
-  async deleteDocument(
-    @Param('collection') collection: string,
-    @Param('id') id: string,
-  ) {
-    return await this.firebaseRepo.deleteDocument(collection, id);
-  }
+    @Delete(':collection/:id')
+    async deleteDocument(
+        @Param('collection') collection: string,
+        @Param('id') id: string
+    ) {
+        return await this.firebaseRepo.deleteDocument(collection, id);
+    }
 }

@@ -8,15 +8,15 @@ import { FirebaseTestController } from './database/firebase/firebase-test/fireba
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true, // Make it globally available
-    }),
-    ContactModule,
-    PythonModule,
-    FirebaseModule,
-  ],
-  controllers: [AppController, FirebaseTestController],
-  providers: [AppService],
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true, // Make it globally available
+        }),
+        ContactModule,
+        PythonModule,
+        FirebaseModule,
+    ],
+    controllers: [AppController, FirebaseTestController],
+    providers: [AppService],
 })
 export class AppModule {}

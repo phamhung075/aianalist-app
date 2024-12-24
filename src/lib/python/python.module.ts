@@ -4,8 +4,8 @@ import { PythonController } from './python.controller';
 import { PythonService } from './python.service';
 
 @Module({
-  controllers: [PythonController],
-  providers: [PythonService],
-  exports: [PythonService],
+    controllers: [PythonController],
+    providers: [PythonService],
+    exports: [PythonService],
 })
 export class PythonModule {}

@@ -6,8 +6,8 @@ import { FirebaseRepositoryService } from './firebase-repository/firebase-reposi
 
 @Global()
 @Module({
-  imports: [ConfigModule], // Ensure ConfigModule is imported
-  providers: [FirebaseService, FirebaseRepositoryService],
-  exports: [FirebaseService, FirebaseRepositoryService],
+    imports: [ConfigModule], // Ensure ConfigModule is imported
+    providers: [FirebaseService, FirebaseRepositoryService],
+    exports: [FirebaseService, FirebaseRepositoryService],
 })
 export class FirebaseModule {}
