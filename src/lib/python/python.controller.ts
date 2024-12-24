@@ -6,9 +6,9 @@ import { PythonService } from './python.service';
 export class PythonController {
     constructor(private readonly pythonService: PythonService) {}
 
-    @Get('script1')
-    async runScriptOne(@Query('arg') arg: string) {
-        return await this.pythonService.runScriptOne(arg);
+    @Get('run-test')
+    async runTest(@Query('arg') arg: string) {
+        return await this.pythonService.runTest(arg);
     }
 
     @Get('script2')

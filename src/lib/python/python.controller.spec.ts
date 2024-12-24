@@ -34,8 +34,8 @@ describe('PythonController', () => {
     });
 
     it('should call runScriptOne and return output', async () => {
-        const result = await controller.runScriptOne('testArg');
-        expect(service.runScriptOne).toHaveBeenCalledWith('testArg');
+        const result = await controller.runTest('testArg');
+        expect(service.runTest).toHaveBeenCalledWith('testArg');
         expect(result).toEqual('Python mock executed successfully!');
     });
 });

@@ -67,8 +67,8 @@ export class PythonService {
      * Run the first Python script.
      * Example: script1.py
      */
-    runScriptOne(arg1: string): Promise<string> {
-        return this.runScript('script1.py', [arg1]);
+    runTest(arg1: string): Promise<string> {
+        return this.runScript('test.py', [arg1]);
     }
 
     /**
