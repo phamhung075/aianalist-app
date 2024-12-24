@@ -1,39 +1,89 @@
-// src/lib/python/python.service.ts
 import { Injectable } from '@nestjs/common';
 import { spawn } from 'child_process';
 import * as path from 'path';
+import * as process from 'process';
 
 @Injectable()
 export class PythonService {
-    runPythonScript(arg: string): Promise<string> {
+    /**
+     * Run a generic Python script.
+     * @param scriptName Name of the Python script
+     * @param args Arguments for the Python script
+     */
+    private runScript(
+        scriptName: string,
+        args: string[] = []
+    ): Promise<string> {
         return new Promise((resolve, reject) => {
-            // Build the absolute path to the Python script
-            const scriptPath = path.join(__dirname, 'scripts', 'mock.py');
+            const scriptPath =
+                process.env.NODE_ENV === 'production'
+                    ? path.resolve(__dirname, 'scripts', scriptName) // Production path
+                    : path.resolve(
+                          __dirname,
+                          '..',
+                          '..',
+                          '..',
+                          'src',
+                          'lib',
+                          'python',
+                          'scripts',
+                          scriptName
+                      ); // Development path
+
             console.log('Python Script Path:', scriptPath);
 
-            const pythonProcess = spawn('python', [scriptPath, arg]);
+            const pythonProcess = spawn('python', [scriptPath, ...args]);
 
             let output = '';
             let error = '';
 
-            // Capture stdout
             pythonProcess.stdout.on('data', (data) => {
                 output += data.toString();
             });
 
-            // Capture stderr
             pythonProcess.stderr.on('data', (data) => {
                 error += data.toString();
             });
 
-            // Handle close event
+            pythonProcess.on('error', (err) => {
+                console.error('Failed to start Python process:', err.message);
+                reject(`Failed to start Python process: ${err.message}`);
+            });
+
             pythonProcess.on('close', (code) => {
                 if (code === 0) {
                     resolve(output);
                 } else {
+                    console.error(
+                        `Python script exited with code ${code}: ${error}`
+                    );
                     reject(`Python script exited with code ${code}: ${error}`);
                 }
             });
         });
+    }
+
+    /**
+     * Run the first Python script.
+     * Example: script1.py
+     */
+    runScriptOne(arg1: string): Promise<string> {
+        return this.runScript('script1.py', [arg1]);
+    }
+
+    /**
+     * Run the second Python script.
+     * Example: script2.py
+     */
+    runScriptTwo(arg1: string, arg2: string): Promise<string> {
+        return this.runScript('script2.py', [arg1, arg2]);
+    }
+
+    /**
+     * Run the third Python script.
+     * Example: script3.py
+     */
+    runScriptThree(): Promise<string> {
+        return this.runScript('script3.py');
     }
 }

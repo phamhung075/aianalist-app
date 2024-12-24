@@ -6,15 +6,21 @@ import { PythonService } from './python.service';
 export class PythonController {
     constructor(private readonly pythonService: PythonService) {}
 
-    @Get('run')
-    async runScript(@Query('arg') arg: string) {
-        try {
-            const result = await this.pythonService.runPythonScript(
-                arg || 'default'
-            );
-            return { success: true, output: result };
-        } catch (error) {
-            return { success: false, error };
-        }
+    @Get('script1')
+    async runScriptOne(@Query('arg') arg: string) {
+        return await this.pythonService.runScriptOne(arg);
+    }
+
+    @Get('script2')
+    async runScriptTwo(
+        @Query('arg1') arg1: string,
+        @Query('arg2') arg2: string
+    ) {
+        return await this.pythonService.runScriptTwo(arg1, arg2);
+    }
+
+    @Get('script3')
+    async runScriptThree() {
+        return await this.pythonService.runScriptThree();
     }
 }
