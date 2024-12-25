@@ -11,8 +11,8 @@ import {
     signInWithEmailAndPassword,
 } from 'firebase/auth';
 import * as admin from 'firebase-admin';
-import { firebaseAuth } from '../config/firebase-client.config';
 import { FirebaseService } from '../database/firebase/firebase.service';
+import { getFirebaseAuth } from '@/config/firebase-client.config';
 
 @Injectable()
 export class AuthService {
@@ -21,9 +21,10 @@ export class AuthService {
     constructor(private readonly firebaseService: FirebaseService) {}
 
     async register(email: string, password: string): Promise<string> {
+        console.log('Registering user:', email, password);
         try {
             const userCredential = await createUserWithEmailAndPassword(
-                firebaseAuth,
+                getFirebaseAuth(),
                 email,
                 password
             );
@@ -40,7 +41,7 @@ export class AuthService {
     async login(email: string, password: string): Promise<string> {
         try {
             const userCredential = await signInWithEmailAndPassword(
-                firebaseAuth,
+                getFirebaseAuth(),
                 email,
                 password
             );

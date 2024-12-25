@@ -8,6 +8,7 @@ import { FirebaseModule } from './database/firebase/firebase.module';
 import { FirebaseTestController } from './database/firebase/firebase-test/firebase-test.controller';
 import { ConfigModule } from '@nestjs/config';
 import { AuthController } from './auth/auth.controller';
+import { initializeFirebaseClient } from './config/firebase-client.config';
 
 @Module({
     imports: [
@@ -23,4 +24,9 @@ import { AuthController } from './auth/auth.controller';
     controllers: [AppController, FirebaseTestController, AuthController],
     providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+    constructor() {
+        initializeFirebaseClient(); // Ensure Firebase is initialized at app startup
+        console.log('✅ Firebase Client initialized during AppModule construction');
+    }
+}
