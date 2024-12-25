@@ -16,7 +16,7 @@ export class PythonService {
     ): Promise<string> {
         return new Promise((resolve, reject) => {
             const scriptPath = process.env.NODE_ENV === 'production'
-                ? path.resolve(__dirname, '..', 'scripts', scriptName) // Updated production path
+                ? path.resolve(__dirname, 'scripts', scriptName) // Updated production path
                 : path.resolve(
                     __dirname,
                     '..',

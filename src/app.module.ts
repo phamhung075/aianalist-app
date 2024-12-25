@@ -5,7 +5,6 @@ import { AppService } from './app.service';
 import { ContactModule } from './modules/contact/contact.module';
 import { PythonModule } from './lib/python/python.module';
 import { FirebaseModule } from './database/firebase/firebase.module';
-import { FirebaseTestController } from './database/firebase/firebase-test/firebase-test.controller';
 import { ConfigModule } from '@nestjs/config';
 import { AuthController } from './auth/auth.controller';
 import { initializeFirebaseClient } from './config/firebase-client.config';
@@ -22,7 +21,7 @@ import { initializeFirebaseAdmin } from './config/firebase-admin.config';
         FirebaseModule,
         AuthModule,
     ],
-    controllers: [AppController, FirebaseTestController, AuthController],
+    controllers: [AppController, AuthController],
     providers: [AppService],
 })
 export class AppModule {
