@@ -14,7 +14,6 @@ async function bootstrap() {
     
     // Start the server
     await app.listen(3000);
-    logger.log(`🚀 Application is running on: http://localhost:3000`);
 
     // Display all routes
     const httpAdapterHost = app.get(HttpAdapterHost);
