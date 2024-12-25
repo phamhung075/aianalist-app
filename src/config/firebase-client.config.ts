@@ -1,7 +1,7 @@
 // src/config/firebase-client.config.ts
 import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import { getAuth, Auth } from 'firebase/auth';
-import { firebaseConfig } from './firebase.config';
+import { firebaseConfig } from '.';
 
 let firebaseApp: FirebaseApp;
 let firebaseAuth: Auth;
