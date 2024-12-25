@@ -22,6 +22,7 @@ export class PythonService {
                     '..',
                     '..',
                     '..',
+                    '..',
                     'src',
                     'lib',
                     'python',

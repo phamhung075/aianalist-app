@@ -7,7 +7,8 @@ import { HttpAdapterHost } from '@nestjs/core';
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const logger = new Logger('Bootstrap');
-    
+        const isDevelopment = process.env.NODE_ENV !== 'production';
+    const port = process.env.PORT || 3000;
     // Global pipes
     app.useGlobalPipes(new ValidationPipe());
     
@@ -19,7 +20,8 @@ async function bootstrap() {
     const httpAdapterHost = app.get(HttpAdapterHost);
     const httpServer = httpAdapterHost.httpAdapter.getHttpServer();
     const router = httpServer._events.request._router;
-
+    logger.log(`🚀 Application is running on: http://localhost:${port}`);
+    logger.log(`🌍 Environment: ${isDevelopment ? 'Development' : 'Production'}`);
     logger.log('📚 List of API Routes:');
     router.stack
         .filter((r: any) => r.route)
@@ -35,3 +37,5 @@ bootstrap().catch((error) => {
     const logger = new Logger('Bootstrap');
     logger.error('Failed to start application:', error);
 });
+
+
