@@ -39,30 +39,3 @@ export const firebaseConfig = {
     appId: process.env.FIREBASE_APP_ID,
     measurementId: process.env.FIREBASE_MEASUREMENT_ID,
 };
-
-// ✅ Firebase Initialization (Ensure Singleton Pattern)
-let firebaseApp;
-
-if (!getApps().length) {
-    firebaseApp = initializeApp(firebaseConfig);
-    console.log('✅ Firebase Client SDK Initialized');
-} else {
-    firebaseApp = getApp();
-    console.log('⚠️ Firebase Client SDK Already Initialized');
-}
-
-// ✅ Firebase Auth Export
-const firebaseAuth = getAuth(firebaseApp);
-export { firebaseAuth };
-
-/**
- * ✅ Display Loaded Configuration
- * @returns string
- */
-export function showConfig(): string {
-    if (isEmpty(config)) {
-        return '❌ Config not loaded';
-    } else {
-        return `✅ Config: ${JSON.stringify(config, null, 2)}`;
-    }
-}

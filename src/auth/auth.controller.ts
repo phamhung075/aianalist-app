@@ -1,8 +1,7 @@
 // src/auth/auth.controller.ts
-
-import { Controller, Post, Body, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Req, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { FirebaseAuthGuard } from './firebase-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -24,8 +23,14 @@ export class AuthController {
         return this.authService.login(email, password);
     }
 
+    @Get('me')
+    @UseGuards(FirebaseAuthGuard)
+    async getCurrentUser(@Req() req) {
+        return this.authService.getUser(req.user.uid);
+    }
+
     @Post('verify')
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(FirebaseAuthGuard)
     verify(@Req() req) {
         return req.user;
     }

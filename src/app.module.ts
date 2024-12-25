@@ -1,3 +1,4 @@
+import { AuthModule } from './auth/auth.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,12 +11,14 @@ import { AuthController } from './auth/auth.controller';
 
 @Module({
     imports: [
+        AuthModule, 
         ConfigModule.forRoot({
             isGlobal: true, // Make it globally available
         }),
         ContactModule,
         PythonModule,
         FirebaseModule,
+        AuthModule,
     ],
     controllers: [AppController, FirebaseTestController, AuthController],
     providers: [AppService],
