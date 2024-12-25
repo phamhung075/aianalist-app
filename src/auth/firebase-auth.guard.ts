@@ -1,11 +1,11 @@
 // src/auth/firebase-auth.guard.ts
+import { FirebaseService } from '@/database/firebase/firebase.service';
 import {
     Injectable,
     CanActivate,
     ExecutionContext,
     UnauthorizedException,
 } from '@nestjs/common';
-import { FirebaseService } from 'src/database/firebase/firebase.service';
 
 @Injectable()
 export class FirebaseAuthGuard implements CanActivate {
