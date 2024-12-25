@@ -14,8 +14,6 @@ describe('PythonController', () => {
         provide: PythonService,
         useValue: {
           runTest: jest.fn(),
-          runScriptTwo: jest.fn(),
-          runScriptThree: jest.fn(),
         }
       }],
     }).compile();
