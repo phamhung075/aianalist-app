@@ -9,6 +9,7 @@ import { FirebaseTestController } from './database/firebase/firebase-test/fireba
 import { ConfigModule } from '@nestjs/config';
 import { AuthController } from './auth/auth.controller';
 import { initializeFirebaseClient } from './config/firebase-client.config';
+import { initializeFirebaseAdmin } from './config/firebase-admin.config';
 
 @Module({
     imports: [
@@ -28,5 +29,6 @@ export class AppModule {
     constructor() {
         console.log('🔥 Initializing Firebase Client...');
         initializeFirebaseClient(); // Must be called first
+        initializeFirebaseAdmin(); // Must be called second
     }
 }
