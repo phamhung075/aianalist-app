@@ -3,11 +3,16 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
+import { config } from 'dotenv';
 
 async function bootstrap() {
+    // Load environment variables based on NODE_ENV
+    // console.log('NODE_ENV:', process.env);
+    const environment = process.env.NODE_ENV || 'development';
+    config({ path: `.env.${environment}` });
     const app = await NestFactory.create(AppModule);
     const logger = new Logger('Bootstrap');
-        const isDevelopment = process.env.NODE_ENV !== 'production';
+    const isDevelopment = process.env.NODE_ENV !== 'production';
     const port = process.env.PORT || 3000;
     // Global pipes
     app.useGlobalPipes(new ValidationPipe());
