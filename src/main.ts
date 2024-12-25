@@ -4,8 +4,11 @@ import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 import { config } from 'dotenv';
+import { isRunningWithNodemon } from './_core/check-nodemon';
 
 async function bootstrap() {
+    isRunningWithNodemon()
+
     // Load environment variables based on NODE_ENV
     // console.log('NODE_ENV:', process.env);
     const environment = process.env.NODE_ENV || 'development';

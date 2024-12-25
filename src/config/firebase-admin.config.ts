@@ -20,7 +20,7 @@ export function initializeFirebaseAdmin() {
         // }),
         databaseURL: process.env.FIREBASE_DATABASE_URL,
     });
-    console.log('🔥 Firebase Client initialized successfully');
+    console.log('🔥 Firebase Admin initialized successfully');
     return admin;
 }
 
