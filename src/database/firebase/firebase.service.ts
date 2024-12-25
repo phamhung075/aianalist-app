@@ -1,7 +1,10 @@
 // src/firebase/firebase.service.ts
-import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
-import * as admin from 'firebase-admin';
+import * as serviceAccount from '@environment/ai-analyst-14876-firebase-adminsdk-euw8h-703ddf3555.json';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { getApp } from '@node_modules/firebase-admin/lib/app';
+import { yellow } from 'colorette';
+import * as admin from 'firebase-admin';
 
 @Injectable()
 export class FirebaseService implements OnModuleInit {
@@ -9,26 +12,21 @@ export class FirebaseService implements OnModuleInit {
 
     constructor(private readonly configService: ConfigService) {}
 
-    onModuleInit() {
-        if (!admin.apps.length) {
-            admin.initializeApp({
-                credential: admin.credential.cert({
-                    projectId: this.configService.get<string>(
-                        'FIREBASE_PROJECT_ID'
-                    ),
-                    privateKey: this.configService
-                        .get<string>('FIREBASE_PRIVATE_KEY')
-                        ?.replace(/\\n/g, '\n'),
-                    clientEmail: this.configService.get<string>(
-                        'FIREBASE_CLIENT_EMAIL'
-                    ),
-                }),
-                databaseURL: this.configService.get<string>(
-                    'FIREBASE_DATABASE_URL'
-                ),
-                // storageBucket: this.configService.get<string>('FIREBASE_STORAGE_BUCKET'),
-            });
-            this.logger.log('Firebase Initialized Successfully');
+      onModuleInit() {
+        try {
+            if (!admin.apps.length) {
+                admin.initializeApp({
+                    credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
+                    databaseURL: this.configService.get<string>('FIREBASE_DATABASE_URL') || "https://ai-analyst-14876.firebaseio.com",
+                });
+                this.logger.log(yellow('✅ Firebase Admin initialized'));
+            } else {
+                const firebaseAdminApp = getApp();
+                this.logger.warn(yellow('⚠️ Firebase Admin already initialized'));
+            }
+        } catch (error) {
+            this.logger.error('❌ Failed to initialize Firebase Admin', error);
+            throw error;
         }
     }
 

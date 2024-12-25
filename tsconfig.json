@@ -20,6 +20,18 @@
         "esModuleInterop": true,
         "resolveJsonModule": true,
         "strict": true,
-        "moduleResolution": "node"
+        "moduleResolution": "node",
+        "paths": {	
+			"@/*": ["src/*"],
+			"@src/*": ["src/*"],
+			"@scripts/*": ["src/scripts/*"],
+			"@utils/*": ["src/utils/*"],
+			"@modules/*": ["src/modules/*"],
+			"@database/*": ["src/database/*"],
+			"@env/*": ["src/config/*"],
+			"@node_modules/*": ["node_modules/*"],
+			"@environment/*": ["environment/*"],
+			"@config/*": ["src/config/*"]
+		}
     }
 }
