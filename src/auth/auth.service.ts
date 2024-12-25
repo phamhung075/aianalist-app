@@ -22,9 +22,11 @@ export class AuthService {
 
     async register(email: string, password: string): Promise<string> {
         console.log('Registering user:', email, password);
+        const auth = getFirebaseAuth();
+        console.log('Firebase Auth:', auth);
         try {
             const userCredential = await createUserWithEmailAndPassword(
-                getFirebaseAuth(),
+                auth,
                 email,
                 password
             );

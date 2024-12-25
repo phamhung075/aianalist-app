@@ -26,7 +26,7 @@ import { initializeFirebaseClient } from './config/firebase-client.config';
 })
 export class AppModule {
     constructor() {
-        initializeFirebaseClient(); // Ensure Firebase is initialized at app startup
-        console.log('✅ Firebase Client initialized during AppModule construction');
+        console.log('🔥 Initializing Firebase Client...');
+        initializeFirebaseClient(); // Must be called first
     }
 }
