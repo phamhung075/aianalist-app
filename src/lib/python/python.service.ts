@@ -15,23 +15,21 @@ export class PythonService {
         args: string[] = []
     ): Promise<string> {
         return new Promise((resolve, reject) => {
-            const scriptPath =
-                process.env.NODE_ENV === 'production'
-                    ? path.resolve(__dirname, 'scripts', scriptName) // Production path
-                    : path.resolve(
-                          __dirname,
-                          '..',
-                          '..',
-                          '..',
-                          'src',
-                          'lib',
-                          'python',
-                          'scripts',
-                          scriptName
-                      ); // Development path
+            const scriptPath = process.env.NODE_ENV === 'production'
+                ? path.resolve(__dirname, '..', 'scripts', scriptName) // Updated production path
+                : path.resolve(
+                    __dirname,
+                    '..',
+                    '..',
+                    '..',
+                    'src',
+                    'lib',
+                    'python',
+                    'scripts',                    
+                    scriptName
+                );
 
             console.log('Python Script Path:', scriptPath);
-
             const pythonProcess = spawn('python', [scriptPath, ...args]);
 
             let output = '';
