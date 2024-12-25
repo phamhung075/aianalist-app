@@ -69,20 +69,4 @@ export class PythonService {
     runTest(arg1: string): Promise<string> {
         return this.runScript('test.py', [arg1]);
     }
-
-    /**
-     * Run the second Python script.
-     * Example: script2.py
-     */
-    runScriptTwo(arg1: string, arg2: string): Promise<string> {
-        return this.runScript('script2.py', [arg1, arg2]);
-    }
-
-    /**
-     * Run the third Python script.
-     * Example: script3.py
-     */
-    runScriptThree(): Promise<string> {
-        return this.runScript('script3.py');
-    }
 }
