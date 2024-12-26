@@ -52,9 +52,10 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, ApiResponse<T>
     startTime: number,
   ): Observable<never> {
     this.logger.logError(this.logger.createErrorLog(request, error, startTime));
-    const responseTime = startTime ? `${Date.now() - startTime}ms` : '0ms';
+      const responseTime = startTime ? `${Date.now() - startTime}ms` : '0ms';
+      console.error('ERROR:', error);
 
-      if (error instanceof ErrorResponse) {
+    if (error instanceof ErrorResponse) {
       return throwError(() => new HttpException(
         {
           error: {
@@ -70,7 +71,11 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, ApiResponse<T>
         },
         error.status,
       ));
-    }
+      }
+      
+      if (error instanceof Error) {
+        this.handleError
+      }
 
     return throwError(() => new HttpException(
       {

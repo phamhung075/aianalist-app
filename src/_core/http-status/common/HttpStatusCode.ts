@@ -61,12 +61,12 @@ export interface PaginationParams {
 export interface PaginationResult<T> {
     items: T[];
     meta: {
-        page: number;
-        limit: number;
-        totalItems: number;
-        totalPages: number;
-        hasNext: boolean;
-        hasPrev: boolean;
+        page?: number;
+        limit?: number;
+        totalItems?: number;
+        totalPages?: number;
+        hasNext?: boolean;
+        hasPrev?: boolean;
     };
 }
 
@@ -78,7 +78,7 @@ export interface ApiError<T> {
     errors?: any[];
     stack?: string;
     details?: any;
-    metaData?: {
+    metadata?: {
         timestamp: string;
         path?: string;
         [key: string]: any;
@@ -96,7 +96,7 @@ export interface ApiSuccess<T> {
         next?: string;
         prev?: string;
     }
-    metaData?: {
+    metadata?: {
         timestamp: string;
         path?: string;
         pagination?: PaginationResult<T>['meta'];
