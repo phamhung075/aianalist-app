@@ -1,24 +1,25 @@
 // src/main.ts
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { HttpAdapterHost } from '@nestjs/core';
-import { config } from 'dotenv';
-import { isRunningWithNodemon } from './_core/check-nodemon';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { NextFunction, Response } from '@node_modules/@types/express';
+import { config } from 'dotenv';
+import express from 'express';
 import { asyncHandlerFn } from './_core/async-handler/async-handler';
 import { ExtendedFunctionRequest } from './_core/async-handler/interfaces/ExtendedFunctionRequest.interface';
+import { isRunningWithNodemon } from './_core/check-nodemon';
+import { setupCors } from './_core/cors';
 import { responseLogger } from './_core/responseLogger';
 import { showRequestUrl } from './_core/showRequestUrl';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
+    const app = await NestFactory.create(AppModule);
     isRunningWithNodemon()
 
     // Load environment variables based on NODE_ENV
     // console.log('NODE_ENV:', process.env);
     const environment = process.env.NODE_ENV || 'development';
     config({ path: `.env.${environment}` });
-    const app = await NestFactory.create(AppModule);
     const logger = new Logger('Bootstrap');
     const isDevelopment = process.env.NODE_ENV !== 'production';
     const port = process.env.PORT || 3000;
@@ -43,11 +44,15 @@ async function bootstrap() {
                 .join(', ');
             logger.log(`${methods} -> ${r.route.path}`);
         });
-    // app.use(showRequestUrl);
-    // app.use(responseLogger);
-    // app.use((req: ExtendedFunctionRequest, res: Response, next: NextFunction) => {
-    //     asyncHandlerFn(next)(req, res, next);
-    // });
+    
+    setupCors(app);
+	app.use(express.json({ limit: '50mb' }));
+	app.use(express.urlencoded({ limit: '50mb', extended: true }));
+    app.use(showRequestUrl);
+    app.use(responseLogger);
+    app.use((req: ExtendedFunctionRequest, res: Response, next: NextFunction) => {
+        asyncHandlerFn(next)(req, res, next);
+    });
 }
 
 bootstrap().catch((error) => {
