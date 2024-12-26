@@ -9,7 +9,7 @@ import { responseLogger } from './_core/response-log';
 import { showRequestUrl } from './_core/request-log';
 import { AppModule } from './app.module';
 import helmet from '@node_modules/helmet/index.cjs';
-import rateLimit from '@node_modules/express-rate-limit/dist';
+import rateLimit from '@node_modules/express-rate-limit';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
