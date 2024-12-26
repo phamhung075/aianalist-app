@@ -4,13 +4,21 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { FirebaseService } from '../database/firebase/firebase.service';
 import { FirebaseAuthGuard } from './firebase-auth.guard';
+import { LoggerService } from '@/_core/async-handler/logger.service';
+import { APP_INTERCEPTOR } from '@node_modules/@nestjs/core';
+import { ResponseInterceptor } from '@/_core/interceptor/response.interceptor';
 
 @Module({
     controllers: [AuthController],
     providers: [
         AuthService,
         FirebaseService,
-        FirebaseAuthGuard
+        FirebaseAuthGuard,
+        LoggerService,
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: ResponseInterceptor,
+        },
     ],
     exports: [AuthService, FirebaseAuthGuard],
 })

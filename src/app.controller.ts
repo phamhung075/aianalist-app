@@ -6,8 +6,7 @@ import _SUCCESS from './_core/async-handler/success';
 export class AppController {
     constructor(private readonly appService: AppService) {}
 
-    @Get() 
-        
+    @Get()         
     getHello(
         @Req() req,
         @Res() res

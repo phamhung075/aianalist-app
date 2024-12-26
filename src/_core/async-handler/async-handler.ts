@@ -1,27 +1,26 @@
 import { yellow } from 'colorette';
-import { NextFunction, RequestHandler, Response } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import * as fs from 'fs';
 import * as path from 'path';
 import { HttpStatusCode } from './common/HttpStatusCode';
 import { RestHandler } from './common/RestHandler';
 import { ErrorResponse } from './error';
-import { ExtendedFunctionRequest } from './interfaces/ExtendedFunctionRequest.interface';
 const { StatusCodes } = HttpStatusCode;
 
 
 export type AsyncHandlerFn = (
     handler: RequestHandler
 ) => (
-    req: ExtendedFunctionRequest, 
+    req: Request, 
     res: Response, 
     next: NextFunction
     ) => Promise<void>;
 
 // Middleware function to log responses and errors
 export function logResponseMiddleware(
-    fn: (req: ExtendedFunctionRequest, res: Response, next: NextFunction) => Promise<any>
+    fn: (req: Request, res: Response, next: NextFunction) => Promise<any>
 ) {
-    return async (req: ExtendedFunctionRequest, res: Response, next: NextFunction) => {
+    return async (req: Request, res: Response, next: NextFunction) => {
         const startTime = Date.now();
         const logDir = createLogDir();
         const logger = createLogger(logDir);
@@ -38,15 +37,15 @@ export function logResponseMiddleware(
 
 export const asyncHandlerFn: AsyncHandlerFn = (handler: RequestHandler) =>
     logResponseMiddleware(async (
-        req: ExtendedFunctionRequest,
+        req: Request,
         res: Response,
         next: NextFunction
     ) => {
         const startTime = Date.now();
-        if (!req.startTime) {
-            req.startTime = startTime;
+        if (!req['startTime']) {
+            req['startTime'] = startTime;
         } 
-        console.log(yellow(`Request received for startTime ${ req.startTime }`));
+        console.log(yellow(`Request received for startTime ${ req['startTime'] }`));
         try {
             const result = await handler(req, res, next);
             if (!res.headersSent) {
@@ -84,7 +83,7 @@ function createLogger(logDir: string) {
 }
 
 // Error logging format
-function createErrorLog(req: ExtendedFunctionRequest, error: any, startTime: number): string {
+function createErrorLog(req: Request, error: any, startTime: number): string {
     return `
 ${new Date().toISOString()}
 _________________ ERROR _________________
@@ -97,7 +96,7 @@ __________________________________________
 }
 
 // Error handler
-function handleError(req: ExtendedFunctionRequest, res: Response, error: any) {    
+function handleError(req: Request, res: Response, error: any) {    
     if (!res.headersSent) {
         if (error instanceof ErrorResponse) {
             return RestHandler.error(res, {
@@ -108,7 +107,7 @@ function handleError(req: ExtendedFunctionRequest, res: Response, error: any) {
                     message: err.message,
                     field: err.field,
                 })),
-                startTime: req.startTime
+                startTime: req['startTime']
             });
         }
 
@@ -120,7 +119,7 @@ function handleError(req: ExtendedFunctionRequest, res: Response, error: any) {
                 code: 'INTERNAL_SERVER_ERROR',
                 message: error.message || 'Unknown error'
             }],
-            startTime: req.startTime
+            startTime: req['startTime']
         });
     }
 }

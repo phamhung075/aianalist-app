@@ -37,6 +37,7 @@ export class AuthController {
     async getCurrentUser(@Req() req, @Res() res) {
         const result = await this.authService.getUser(req.user.uid);
         const message = 'User fetched successfully';
+        console.log(req.startTime);
         new _SUCCESS.SuccessResponse({ message, data: result }).setResponseTime(req.startTime).send(res);
     }
 

@@ -71,7 +71,7 @@ export interface PaginationResult<T> {
 }
 
 export interface ApiError<T> {
-    success: false;
+    success?: false;
     status?: number;
     code?: number | string;
     message: string;
@@ -86,11 +86,16 @@ export interface ApiError<T> {
 }
 
 export interface ApiSuccess<T> {
-    success: true;
+    success?: true;
     status?: number;
     message?: string;
     code?: number | string;
     data?: T;
+    links?: {
+        self?: string;
+        next?: string;
+        prev?: string;
+    }
     metaData?: {
         timestamp: string;
         path?: string;
