@@ -8,10 +8,17 @@ import { setupCors } from './_core/cors';
 import { responseLogger } from './_core/response-log';
 import { showRequestUrl } from './_core/request-log';
 import { AppModule } from './app.module';
+import helmet from '@node_modules/helmet/index.cjs';
+import rateLimit from '@node_modules/express-rate-limit/dist';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     setupCors(app);
+    app.use(helmet());
+    app.use(rateLimit({
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        max: 100 // limit each IP to 100 requests per windowMs
+    }));
 	app.use(express.json({ limit: '50mb' }));
 	app.use(express.urlencoded({ limit: '50mb', extended: true }));
     app.use(showRequestUrl);
