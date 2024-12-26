@@ -5,6 +5,11 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 import { config } from 'dotenv';
 import { isRunningWithNodemon } from './_core/check-nodemon';
+import { NextFunction, Response } from '@node_modules/@types/express';
+import { asyncHandlerFn } from './_core/async-handler/async-handler';
+import { ExtendedFunctionRequest } from './_core/async-handler/interfaces/ExtendedFunctionRequest.interface';
+import { responseLogger } from './_core/responseLogger';
+import { showRequestUrl } from './_core/showRequestUrl';
 
 async function bootstrap() {
     isRunningWithNodemon()
@@ -38,6 +43,11 @@ async function bootstrap() {
                 .join(', ');
             logger.log(`${methods} -> ${r.route.path}`);
         });
+    // app.use(showRequestUrl);
+    // app.use(responseLogger);
+    // app.use((req: ExtendedFunctionRequest, res: Response, next: NextFunction) => {
+    //     asyncHandlerFn(next)(req, res, next);
+    // });
 }
 
 bootstrap().catch((error) => {

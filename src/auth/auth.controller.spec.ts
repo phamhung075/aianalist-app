@@ -2,10 +2,25 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { FirebaseService } from '@/database/firebase/firebase.service';
+import _SUCCESS from '@/_core/async-handler/success';
 
 describe('AuthController', () => {
   let controller: AuthController;
   let authService: AuthService;
+
+  const createMockRes = () => {
+    const headers = {};
+    return {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+      setHeader: jest.fn().mockImplementation((key, value) => {
+        headers[key] = value;
+        return this;
+      }),
+      getHeader: jest.fn().mockImplementation((key) => headers[key]),
+      headers,
+    };
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -71,24 +86,68 @@ describe('AuthController', () => {
   });
 
   describe('verify', () => {
-    it('should return the user from the request', async () => {
+    it('should return success response with user data', async () => {
       const mockUser = { uid: 'mock-uid', email: 'test@example.com' };
-      const mockReq = { user: mockUser };
+      const mockReq = { 
+        user: mockUser,
+        startTime: Date.now()
+      };
+      const mockRes = createMockRes();
 
-      const result = await controller.verify(mockReq);
+      await controller.verify(mockReq, mockRes);
 
-      expect(result).toEqual(mockUser);
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          success: true,
+          message: 'User verified successfully',
+          data: mockUser,
+          metadata: expect.objectContaining({
+            code: 200,
+            status: 'Ok',
+            responseTime: expect.any(String),
+            timestamp: expect.any(String)
+          })
+        })
+      );
+
+      expect(mockRes.setHeader).toHaveBeenCalledWith(
+        'X-Response-Time',
+        expect.stringMatching(/^\d+ms$/)
+      );
     });
   });
 
   describe('getCurrentUser', () => {
-    it('should call authService.getUser with correct uid from request', async () => {
+    it('should return success response with user data', async () => {
       const mockUser = { uid: 'mock-uid' };
-      const mockReq = { user: mockUser };
+      const mockUserData = { uid: 'mock-uid', email: 'test@example.com' };
+      const mockReq = { 
+        user: mockUser,
+        startTime: Date.now()
+      };
+      const mockRes = createMockRes();
 
-      await controller.getCurrentUser(mockReq);
+      await controller.getCurrentUser(mockReq, mockRes);
 
       expect(authService.getUser).toHaveBeenCalledWith(mockUser.uid);
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          success: true,
+          message: 'User fetched successfully',
+          data: mockUserData,
+          metadata: expect.objectContaining({
+            code: 200,
+            status: 'Ok',
+            responseTime: expect.any(String),
+            timestamp: expect.any(String)
+          })
+        })
+      );
+
+      expect(mockRes.setHeader).toHaveBeenCalledWith(
+        'X-Response-Time',
+        expect.stringMatching(/^\d+ms$/)
+      );
     });
   });
 });

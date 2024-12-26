@@ -9,7 +9,7 @@ export class FirebaseService implements OnModuleInit {
     private adminAuth: admin.auth.Auth;
 
     onModuleInit() {
-        // this.initializeFirebaseAdmin();
+        this.initializeFirebaseAdmin();
     }
 
     private initializeFirebaseAdmin() {
