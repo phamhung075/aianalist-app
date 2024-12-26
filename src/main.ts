@@ -59,10 +59,7 @@ async function bootstrap() {
                 .map((method) => method.toUpperCase())
                 .join(', ');
             logger.log(`${methods} -> ${r.route.path}`);
-        });
-    
-    
-    
+        });   
 }
 
 bootstrap().catch((error) => {
