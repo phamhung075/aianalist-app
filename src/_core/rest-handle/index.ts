@@ -77,6 +77,7 @@ export class RestHandler {
 
 
     static error(
+        req: Request,
         res: Response, 
         {
             code = StatusCodes.INTERNAL_SERVER_ERROR,
@@ -85,7 +86,7 @@ export class RestHandler {
         }: {
             code: number;
             message: string;
-            errors: ApiError<null>[];
+            errors: ApiError<null>[];            
         }
     ): Response {
         const response: ApiResponse<null> = {
@@ -93,6 +94,7 @@ export class RestHandler {
             code,
             message,
             metadata: {
+                responseTime: `${Date.now() - req['startTime']}ms`,
                 timestamp: new Date().toISOString(),
                 status: this.getStatusText(code),
                 path: res.req.originalUrl,

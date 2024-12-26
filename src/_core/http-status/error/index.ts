@@ -117,6 +117,7 @@ class NotFoundError extends ErrorResponse {
 // Thêm các lớp lỗi khác theo nhu cầu...
 
 const _ERROR = {
+    ErrorResponse, // 500
 	BadRequestError, // 400
     ValidationError, // 409
 	// UnauthorizedError, // 401

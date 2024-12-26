@@ -79,6 +79,7 @@ export interface ApiError<T> {
     stack?: string;
     details?: any;
     metadata?: {
+        responseTime?: string;
         timestamp: string;
         path?: string;
         [key: string]: any;
@@ -97,6 +98,7 @@ export interface ApiSuccess<T> {
         prev?: string;
     }
     metadata?: {
+        responseTime?: string;
         timestamp: string;
         path?: string;
         pagination?: PaginationResult<T>['meta'];
