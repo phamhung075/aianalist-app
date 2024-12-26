@@ -8,6 +8,13 @@ describe('AuthController', () => {
   let controller: AuthController;
   let authService: AuthService;
 
+  // Helper to create mock request object
+  const createMockReq = () => ({
+    startTime: Date.now(),
+    user: { uid: 'mock-uid' }
+  });
+
+  // Helper to create mock response object
   const createMockRes = () => {
     const headers = {};
     return {
@@ -29,8 +36,8 @@ describe('AuthController', () => {
         {
           provide: AuthService,
           useValue: {
-            register: jest.fn().mockResolvedValue('mock-token'),
-            login: jest.fn().mockResolvedValue('mock-token'),
+            register: jest.fn().mockResolvedValue({ token: 'mock-token' }),
+            login: jest.fn().mockResolvedValue({ token: 'mock-token' }),
             verifyToken: jest.fn().mockResolvedValue({ uid: 'mock-uid' }),
             getUser: jest.fn().mockResolvedValue({ uid: 'mock-uid', email: 'test@example.com' }),
           }
@@ -54,33 +61,81 @@ describe('AuthController', () => {
   });
 
   describe('register', () => {
-    it('should call authService.register with correct params', async () => {
+    it('should return success response with registration data', async () => {
       const registerDto = {
         email: 'test@example.com',
         password: 'password123'
       };
+      const mockReq = createMockReq();
+      const mockRes = createMockRes();
 
-      await controller.register(registerDto.email, registerDto.password);
+      await controller.register(
+        registerDto.email,
+        registerDto.password,
+        mockReq,
+        mockRes
+      );
 
       expect(authService.register).toHaveBeenCalledWith(
         registerDto.email,
         registerDto.password
       );
+
+      expect(mockRes.json).toHaveBeenCalledWith({
+        success: true,
+        message: 'User registered successfully',
+        data: { token: 'mock-token' },
+        metadata: {
+          code: 200,
+          status: 'Ok',
+          responseTime: expect.stringMatching(/^\d+ms$/),
+          timestamp: expect.any(String)
+        }
+      });
+
+      expect(mockRes.setHeader).toHaveBeenCalledWith(
+        'X-Response-Time',
+        expect.stringMatching(/^\d+ms$/)
+      );
     });
   });
 
   describe('login', () => {
-    it('should call authService.login with correct params', async () => {
+    it('should return success response with login data', async () => {
       const loginDto = {
         email: 'test@example.com',
         password: 'password123'
       };
+      const mockReq = createMockReq();
+      const mockRes = createMockRes();
 
-      await controller.login(loginDto.email, loginDto.password);
+      await controller.login(
+        loginDto.email,
+        loginDto.password,
+        mockReq,
+        mockRes
+      );
 
       expect(authService.login).toHaveBeenCalledWith(
         loginDto.email,
         loginDto.password
+      );
+
+      expect(mockRes.json).toHaveBeenCalledWith({
+        success: true,
+        message: 'User logged in successfully',
+        data: { token: 'mock-token' },
+        metadata: {
+          code: 200,
+          status: 'Ok',
+          responseTime: expect.stringMatching(/^\d+ms$/),
+          timestamp: expect.any(String)
+        }
+      });
+
+      expect(mockRes.setHeader).toHaveBeenCalledWith(
+        'X-Response-Time',
+        expect.stringMatching(/^\d+ms$/)
       );
     });
   });
@@ -96,19 +151,17 @@ describe('AuthController', () => {
 
       await controller.verify(mockReq, mockRes);
 
-      expect(mockRes.json).toHaveBeenCalledWith(
-        expect.objectContaining({
-          success: true,
-          message: 'User verified successfully',
-          data: mockUser,
-          metadata: expect.objectContaining({
-            code: 200,
-            status: 'Ok',
-            responseTime: expect.any(String),
-            timestamp: expect.any(String)
-          })
-        })
-      );
+      expect(mockRes.json).toHaveBeenCalledWith({
+        success: true,
+        message: 'User verified successfully',
+        data: mockUser,
+        metadata: {
+          code: 200,
+          status: 'Ok',
+          responseTime: expect.stringMatching(/^\d+ms$/),
+          timestamp: expect.any(String)
+        }
+      });
 
       expect(mockRes.setHeader).toHaveBeenCalledWith(
         'X-Response-Time',
@@ -130,24 +183,39 @@ describe('AuthController', () => {
       await controller.getCurrentUser(mockReq, mockRes);
 
       expect(authService.getUser).toHaveBeenCalledWith(mockUser.uid);
-      expect(mockRes.json).toHaveBeenCalledWith(
-        expect.objectContaining({
-          success: true,
-          message: 'User fetched successfully',
-          data: mockUserData,
-          metadata: expect.objectContaining({
-            code: 200,
-            status: 'Ok',
-            responseTime: expect.any(String),
-            timestamp: expect.any(String)
-          })
-        })
-      );
+      expect(mockRes.json).toHaveBeenCalledWith({
+        success: true,
+        message: 'User fetched successfully',
+        data: mockUserData,
+        metadata: {
+          code: 200,
+          status: 'Ok',
+          responseTime: expect.stringMatching(/^\d+ms$/),
+          timestamp: expect.any(String)
+        }
+      });
 
       expect(mockRes.setHeader).toHaveBeenCalledWith(
         'X-Response-Time',
         expect.stringMatching(/^\d+ms$/)
       );
+    });
+  });
+
+  describe('error handling', () => {
+    it('should propagate errors from authService', async () => {
+      const error = new Error('Authentication failed');
+      authService.login = jest.fn().mockRejectedValue(error);
+      
+      const mockReq = createMockReq();
+      const mockRes = createMockRes();
+
+      await expect(controller.login(
+        'test@example.com',
+        'password123',
+        mockReq,
+        mockRes
+      )).rejects.toThrow('Authentication failed');
     });
   });
 });
