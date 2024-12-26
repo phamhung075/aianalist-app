@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Request } from '@node_modules/@types/express';
+import { isEmpty } from 'lodash';
 import { existsSync, mkdirSync, appendFileSync } from 'fs';
 import { join } from 'path';
 
@@ -29,11 +30,46 @@ export class LoggerService {
 
   logResponse(message: string): void {
     appendFileSync(join(this.logDir, 'response-log.txt'), message + '\n', 'utf8');
-  }
+    }
+
+
+getInput(req: Request): string {
+    let input = '';
+
+    try {
+        if (!isEmpty(req.originalUrl)) {
+            input += `Request URL: ${req.headers.host ?? 'host_not_found'}${req.originalUrl}\n`;
+        }
+
+        if (!isEmpty(req.method)) {
+            input += `Method: ${req.method}\n`;
+        }
+
+        if (!isEmpty(req.body)) {
+            input += `Body: ${JSON.stringify(req.body, null, 2)}\n`;
+        }
+
+        if (!isEmpty(req.params)) {
+            input += `Params: ${JSON.stringify(req.params, null, 2)}\n`;
+        }
+
+        if (!isEmpty(req.query)) {
+            input += `Query: ${JSON.stringify(req.query, null, 2)}\n`;
+        }
+
+        input += `\n`;
+    } catch (error) {
+        console.error('Error in getInput method:', error);
+    }
+
+    return input;
+}
+
 
   createErrorLog(req: Request, error: Error, startTime: number): string {
     return `
 ${new Date().toISOString()}
+${this.getInput(req)}
 _________________ ERROR _________________
 Request: ${req.method} ${req.url}
 Duration: ${Date.now() - startTime}ms

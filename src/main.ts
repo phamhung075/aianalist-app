@@ -1,10 +1,8 @@
 // src/main.ts
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
-import { NextFunction, Request, Response } from '@node_modules/@types/express';
 import { config } from 'dotenv';
 import express from 'express';
-import { asyncHandlerFn } from './_core/async-handler/async-handler';
 import { isRunningWithNodemon } from './_core/check-nodemon';
 import { setupCors } from './_core/cors';
 import { responseLogger } from './_core/responseLogger';
