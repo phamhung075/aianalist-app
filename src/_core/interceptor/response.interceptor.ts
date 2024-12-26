@@ -89,16 +89,11 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, ApiResponse<T>
         }
 
         // Handle general errors
-        if (error instanceof Error) {
+        if (error instanceof HttpException) {
             RestHandler.error(response, {
-                code: HttpStatus.INTERNAL_SERVER_ERROR,
-                message: 'An unexpected server error occurred',
-                errors: [
-                    {
-                        code: 'INTERNAL_SERVER_ERROR',
-                        message: error.message || 'Unknown error',
-                    },
-                ],
+                code: error.getStatus(),
+                message: error.getResponse() as string,
+                errors: [],
             });
         }
 
