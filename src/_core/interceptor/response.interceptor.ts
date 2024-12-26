@@ -52,8 +52,9 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, ApiResponse<T>
     startTime: number,
   ): Observable<never> {
     this.logger.logError(this.logger.createErrorLog(request, error, startTime));
+    const responseTime = startTime ? `${Date.now() - startTime}ms` : '0ms';
 
-    if (error instanceof ErrorResponse) {
+      if (error instanceof ErrorResponse) {
       return throwError(() => new HttpException(
         {
           error: {
@@ -64,7 +65,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, ApiResponse<T>
               message: err.message,
               field: err.field,
             })),
-            startTime: request['startTime'],
+            startTime: responseTime,
           },
         },
         error.status,
@@ -82,7 +83,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, ApiResponse<T>
               message: error.message || 'Unknown error',
             },
           ],
-          startTime: request['startTime'],
+          startTime: responseTime,
         },
       },
       HttpStatus.INTERNAL_SERVER_ERROR,
