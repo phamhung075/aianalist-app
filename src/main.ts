@@ -18,6 +18,10 @@ async function bootstrap() {
 	app.use(express.json({ limit: '50mb' }));
 	app.use(express.urlencoded({ limit: '50mb', extended: true }));
     app.use(showRequestUrl);
+    app.use(responseLogger);
+    // app.use((req: ExtendedFunctionRequest, res: Response, next: NextFunction) => {
+    //     asyncHandlerFn(next)(req, res, next);
+    // });
     isRunningWithNodemon()
 
     // Load environment variables based on NODE_ENV
@@ -31,7 +35,7 @@ async function bootstrap() {
     app.useGlobalPipes(new ValidationPipe());
     
     // Start the server
-    await app.listen(3000);
+    await app.listen(port);
 
     // Display all routes
     const httpAdapterHost = app.get(HttpAdapterHost);
@@ -50,10 +54,7 @@ async function bootstrap() {
         });
     
     
-    // app.use(responseLogger);
-    // app.use((req: ExtendedFunctionRequest, res: Response, next: NextFunction) => {
-    //     asyncHandlerFn(next)(req, res, next);
-    // });
+    
 }
 
 bootstrap().catch((error) => {

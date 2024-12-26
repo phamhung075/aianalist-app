@@ -21,7 +21,7 @@ import { initializeFirebaseAdmin } from './config/firebase-admin.config';
         FirebaseModule,
         AuthModule,
     ],
-    controllers: [AppController, AuthController],
+    controllers: [AppController],
     providers: [AppService],
 })
 export class AppModule {
