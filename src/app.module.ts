@@ -1,14 +1,13 @@
-import { AuthModule } from './auth/auth.module';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ContactModule } from './modules/contact/contact.module';
-import { PythonModule } from './lib/python/python.module';
-import { FirebaseModule } from './database/firebase/firebase.module';
-import { ConfigModule } from '@nestjs/config';
-import { AuthController } from './auth/auth.controller';
-import { initializeFirebaseClient } from './config/firebase-client.config';
+import { AuthModule } from './auth/auth.module';
 import { initializeFirebaseAdmin } from './config/firebase-admin.config';
+import { initializeFirebaseClient } from './config/firebase-client.config';
+import { FirebaseModule } from './database/firebase/firebase.module';
+import { PythonModule } from './lib/python/python.module';
+import { ContactModule } from './modules/contact/contact.module';
 
 @Module({
     imports: [
