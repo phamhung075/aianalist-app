@@ -14,6 +14,10 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
+    setupCors(app);
+	app.use(express.json({ limit: '50mb' }));
+	app.use(express.urlencoded({ limit: '50mb', extended: true }));
+    app.use(showRequestUrl);
     isRunningWithNodemon()
 
     // Load environment variables based on NODE_ENV
@@ -45,14 +49,11 @@ async function bootstrap() {
             logger.log(`${methods} -> ${r.route.path}`);
         });
     
-    setupCors(app);
-	app.use(express.json({ limit: '50mb' }));
-	app.use(express.urlencoded({ limit: '50mb', extended: true }));
-    app.use(showRequestUrl);
-    app.use(responseLogger);
-    app.use((req: ExtendedFunctionRequest, res: Response, next: NextFunction) => {
-        asyncHandlerFn(next)(req, res, next);
-    });
+    
+    // app.use(responseLogger);
+    // app.use((req: ExtendedFunctionRequest, res: Response, next: NextFunction) => {
+    //     asyncHandlerFn(next)(req, res, next);
+    // });
 }
 
 bootstrap().catch((error) => {

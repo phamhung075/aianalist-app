@@ -11,24 +11,31 @@ export class AuthController {
     @Post('register')
     async register(
         @Body('email') email: string,
-        @Body('password') password: string
+        @Body('password') password: string,
+        @Req() req,
+        @Res() res
     ) {
-        return this.authService.register(email, password);
+        const result = await this.authService.register(email, password);
+        const message = 'User registered successfully';
+        new _SUCCESS.SuccessResponse({ message, data: result }).setResponseTime(req.startTime).send(res);
     }
 
     @Post('login')
     async login(
         @Body('email') email: string,
-        @Body('password') password: string
+        @Body('password') password: string,
+        @Req() req,
+        @Res() res
     ) {
-        return this.authService.login(email, password);
+        const result = await this.authService.login(email, password);
+        const message = 'User logged in successfully';
+        new _SUCCESS.SuccessResponse({ message, data: result }).setResponseTime(req.startTime).send(res);
     }
 
     @Get('me')
     @UseGuards(FirebaseAuthGuard)
     async getCurrentUser(@Req() req, @Res() res) {
         const result = await this.authService.getUser(req.user.uid);
-        console.log('🚀 ~ file: auth.controller.ts:34 ~ AuthController ~ getCurrentUser ~ result:', result);
         const message = 'User fetched successfully';
         new _SUCCESS.SuccessResponse({ message, data: result }).setResponseTime(req.startTime).send(res);
     }
