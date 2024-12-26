@@ -86,7 +86,7 @@ export class RestHandler {
         }: {
             code: number;
             message: string;
-            errors: ApiError<null>[];            
+            errors: ApiError[];            
         }
     ): Response {
         const response: ApiResponse<null> = {

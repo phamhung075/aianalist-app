@@ -70,7 +70,7 @@ export interface PaginationResult<T> {
     };
 }
 
-export interface ApiError<T> {
+export interface ApiError {
     success?: false;
     status?: number;
     code?: number | string;
@@ -106,7 +106,7 @@ export interface ApiSuccess<T> {
     };
 }
 
-export type ApiResponse<T> = ApiSuccess<T> | ApiError<T>;
+export type ApiResponse<T> = ApiSuccess<T> | ApiError;
 
 
 /*
