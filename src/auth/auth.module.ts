@@ -13,12 +13,7 @@ import { ResponseInterceptor } from '@/_core/interceptor/response.interceptor';
     providers: [
         AuthService,
         FirebaseService,
-        FirebaseAuthGuard,
-        LoggerService,
-        {
-            provide: APP_INTERCEPTOR,
-            useClass: ResponseInterceptor,
-        },
+        FirebaseAuthGuard,        
     ],
     exports: [AuthService, FirebaseAuthGuard],
 })

@@ -8,6 +8,9 @@ import { initializeFirebaseClient } from './config/firebase-client.config';
 import { FirebaseModule } from './database/firebase/firebase.module';
 import { PythonModule } from './lib/python/python.module';
 import { ContactModule } from './modules/contact/contact.module';
+import { LoggerService } from './_core/async-handler/logger.service';
+import { APP_INTERCEPTOR } from '@node_modules/@nestjs/core';
+import { ResponseInterceptor } from './_core/interceptor/response.interceptor';
 
 @Module({
     imports: [
@@ -18,10 +21,17 @@ import { ContactModule } from './modules/contact/contact.module';
         ContactModule,
         PythonModule,
         FirebaseModule,
-        AuthModule,
+        AuthModule,        
     ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [
+        AppService,
+        LoggerService,
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: ResponseInterceptor,
+        },
+    ],
 })
 export class AppModule {
     constructor() {
