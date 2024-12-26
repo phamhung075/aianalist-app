@@ -36,7 +36,7 @@ export class AuthService {
             return await userCredential.user.getIdToken();
         } catch (error: any) {
             this.logger.error('Firebase Auth Login Error:', error.message || error);
-            if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth\invalid-credential') {
+            if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
                 const unauthenticatedError = new UnauthorizedException('Invalid email or password');
                 console.log('🔐 Unauthenticated Error:', unauthenticatedError);
                 throw unauthenticatedError;
