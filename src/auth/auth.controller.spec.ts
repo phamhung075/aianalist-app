@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { FirebaseService } from '@/database/firebase/firebase.service';
-import _SUCCESS from '@/_core/async-handler/success';
+import _SUCCESS from '@/_core/http-status/success';
 
 describe('AuthController', () => {
   let controller: AuthController;

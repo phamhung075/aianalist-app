@@ -8,10 +8,10 @@ import {
 } from '@nestjs/common';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { ErrorResponse } from '../async-handler/error';
-import { ApiResponse } from '../async-handler/common/HttpStatusCode';
+import { ErrorResponse } from '../http-status/error';
+import { ApiResponse } from '../http-status/common/HttpStatusCode';
 import { Request } from '@node_modules/@types/express';
-import { LoggerService } from '../async-handler/logger.service';
+import { LoggerService } from '../logger-service/logger.service';
 
 @Injectable()
 export class ResponseInterceptor<T> implements NestInterceptor<T, ApiResponse<T>> {

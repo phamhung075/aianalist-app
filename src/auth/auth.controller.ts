@@ -2,7 +2,7 @@
 import { Controller, Post, Body, UseGuards, Req, Get, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { FirebaseAuthGuard } from './firebase-auth.guard';
-import _SUCCESS from '@/_core/async-handler/success';
+import _SUCCESS from '@/_core/http-status/success';
 
 @Controller('auth')
 export class AuthController {

@@ -1,6 +1,6 @@
 import { Controller, Get, Req, Res } from '@nestjs/common';
 import { AppService } from './app.service';
-import _SUCCESS from './_core/async-handler/success';
+import _SUCCESS from './_core/http-status/success';
 
 @Controller()
 export class AppController {
