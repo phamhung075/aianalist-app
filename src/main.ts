@@ -5,8 +5,8 @@ import { config } from 'dotenv';
 import express from 'express';
 import { isRunningWithNodemon } from './_core/check-nodemon';
 import { setupCors } from './_core/cors';
-import { responseLogger } from './_core/responseLogger';
-import { showRequestUrl } from './_core/showRequestUrl';
+import { responseLogger } from './_core/response-log';
+import { showRequestUrl } from './_core/request-log';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
