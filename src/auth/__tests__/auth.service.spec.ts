@@ -1,6 +1,6 @@
 // src/auth/auth.service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth.service';
 import { ConflictException, UnauthorizedException, InternalServerErrorException } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 import { Auth } from 'firebase-admin/auth';

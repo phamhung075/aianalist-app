@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from './app.module';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
-import { ContactModule } from './modules/contact/contact.module';
-import { PythonModule } from './lib/python/python.module';
-import { FirebaseModule } from './database/firebase/firebase.module';
+import { AppModule } from '../../app.module';
+import { AppController } from '../../app.controller';
+import { AppService } from '../../app.service';
+import { AuthModule } from '../../auth/auth.module';
+import { ContactModule } from '../../modules/contact/contact.module';
+import { PythonModule } from '../../lib/python/python.module';
+import { FirebaseModule } from '../../database/firebase/firebase.module';
 import { ConfigModule } from '@nestjs/config';
-import { AuthController } from './auth/auth.controller';
+import { AuthController } from '../../auth/auth.controller';
 
 // Mock the Firebase initialization functions
 jest.mock('./config/firebase-client.config', () => ({
